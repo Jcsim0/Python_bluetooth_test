@@ -1,7 +1,7 @@
 import datetime
 import time
-import traceback
 
+# win10 安装蓝牙依赖包 https://blog.csdn.net/weixin_38676276/article/details/113027104
 import bluetooth
 
 
@@ -34,6 +34,7 @@ class BluetoothConnection:
                 print("{} nearby Bluetooth device(s) has(have) been found:".format(self.nearby_devices.__len__()), self.nearby_devices)  # 附近所有可连的蓝牙设备s
         except Exception as e:
             # print(traceback.format_exc())
+            # 不知是不是Windows的原因，当附近没有蓝牙设备时，bluetooth.discover_devices会报错。
             print("There's no Bluetooth device around here. Program stop(2)!")
 
     def find_target_device(self, target_name, target_address):
