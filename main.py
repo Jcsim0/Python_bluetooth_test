@@ -58,6 +58,7 @@ class BluetoothConnection:
                 sock.connect((target_address, 1))
                 print("Connection successful. Now ready to get the data")
                 data_dtr = ""
+                # 以下代码根据需求更改
                 while True:
                     data = sock.recv(1024)
                     data_dtr += data.decode()
