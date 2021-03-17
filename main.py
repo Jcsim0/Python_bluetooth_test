@@ -11,6 +11,8 @@ class BluetoothConnection:
         self.find = False
         # 附近蓝牙设备
         self.nearby_devices = None
+        # sock
+        self.sock = None
 
     def find_nearby_devices(self):
         print("Detecting nearby Bluetooth devices...")
@@ -53,14 +55,14 @@ class BluetoothConnection:
         self.find_target_device(target_name=target_name, target_address=target_address)
         if self.find:
             print("Ready to connect")
-            sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+            self.sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
             try:
-                sock.connect((target_address, 1))
+                self.sock.connect((target_address, 1))
                 print("Connection successful. Now ready to get the data")
                 data_dtr = ""
                 # 以下代码根据需求更改
                 while True:
-                    data = sock.recv(1024)
+                    data = self.sock.recv(1024)
                     data_dtr += data.decode()
                     if '\n' in data.decode():
                         # data_dtr[:-2] 截断"\t\n",只输出数据
@@ -68,10 +70,15 @@ class BluetoothConnection:
                         data_dtr = ""
             except Exception as e:
                 print("connection fail\n", e)
-                sock.close()
+                self.sock.close()
+
+    def close_target_device(self):
+        print("Ready to close")
+        self.sock.close()
 
 
 if __name__ == '__main__':
     target_name = "BT04-A"
     target_address = "B4:4B:0E:04:16:25"
-    BluetoothConnection().connect_target_device(target_name=target_name, target_address=target_address)
+    b = BluetoothConnection()
+    b.connect_target_device(target_name=target_name, target_address=target_address)
